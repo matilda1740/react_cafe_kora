@@ -1,0 +1,41 @@
+{
+    "breads": [
+        {
+            "name": "BariBari Bread",
+            "src": "images/breads/nobg_barbaribread.png",
+            "cost": "Ksh. 500"
+        },
+        {
+            "name": "Brioche Bread",
+            "src": "images/breads/nobg_brioche.png",
+            "cost": "Ksh. 500"
+        },
+        {
+            "name": "Challah Bread",
+            "src": "images/nobg_challah.png",
+            "cost": "Ksh. 500"
+        },              
+        {
+            "name": "Ciabatta Bread",
+            "src": "images/nobg_ciabatta.png",
+            "cost": "Ksh. 500"
+        },        
+        {
+            "name": "Focaccia Bread",
+            "src": "images/breads/nobg_focaccia.png",
+            "cost": "Ksh. 500"
+        },        {
+            "name": "French Bread",
+            "src": "images/breads/nobg_french.png",
+            "cost": "Ksh. 500"
+        },        {
+            "name": "Jewish Rye Bread",
+            "src": "images/breads/nobg_jewishrye.png",
+            "cost": "Ksh. 500"
+        },        {
+            "name": "Kalamata Olive Bread",
+            "src": "images/breads/nobg_kalamataolive.png",
+            "cost": "Ksh. 500"
+        }        
+    ]
+}
