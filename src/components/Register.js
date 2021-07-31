@@ -2,86 +2,147 @@ import React, { useState } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import './Login.css'
 import { useAuth } from '../contexts/AuthContext'
-import { db } from './firebase'
+import { db,  time } from './firebase'
+import {Home } from '@material-ui/icons';
 
 export default function Register() {
-
     const history = useHistory();
 
     const { currentUser, registerUser } = useAuth(); 
 
     const [firstName, setFirstName] = useState();
     const [lastName, setLastName] = useState();
+    const [userPhone, setUserPhone] = useState();
+    const [userRole, setUserRole] = useState();
     const [userEmail, setUserEmail] = useState();
     const [userPass, setUserPass] = useState();
     const [userConfirmPass, setConfirmPass] = useState();
 
-    const[isAuthError, setIsAuthError] = useState(false);
-    const[authError, setAuthError] = useState("");
+    const [isAuthError, setIsAuthError] = useState(false);
+    const [authError, setAuthError] = useState("");
 
+    const [isAdmin, setIsAdmin] = useState(false);
 
     const customersTable = db.collection("customer")
-
+    const adminTable = db.collection("admin")
+    
     const handleChange = (e) => {
+        const selectRole = document.getElementById("select_role")
         
         if(e.target.name === "registerFname"){
             setFirstName(e.target.value)
         }else if (e.target.name === "registerLname"){
             setLastName(e.target.value)
+        }else if (e.target.name === "registerPhone"){
+            setUserPhone(e.target.value)
         }else if (e.target.name === "registerEmail"){
             setUserEmail(e.target.value)
         }else if(e.target.name === "registerPass"){
             setUserPass(e.target.value)
         }else if(e.target.name === "registerConfirmPass"){
             setConfirmPass(e.target.value)
+        }else if (selectRole.id === "select_role"){
+            setUserRole(selectRole.value)
         }
-
     }
 
     const handleRegister = async  e => {
         e.preventDefault();
 
-        try{
-            await registerUser(userEmail, userPass)
-            await customersTable.add({
-                "fname": firstName,
-                "lname": lastName,
-                "email": userEmail,
-                "pass": userPass,
-                "confirmPass": userConfirmPass,
-                })
-            await history.push("/") 
-            await  setIsAuthError(false);
-        }catch(error){
-            console.log("Registration Error: ", error)
+        if(userPass === userConfirmPass){
+            if(isAdmin){
+                try{
+                    console.log(userEmail, userPass)
+                    await registerUser(userEmail, userPass)
+                    await adminTable.add({
+                        "fname": firstName,
+                        "lname": lastName,
+                        "phone": userPhone,
+                        "role" : userRole,
+                        "email": userEmail,
+                        "pass": userPass,
+                        "datejoined": time
+                        })
+                    await history.push("/admin") 
+                    await  setIsAuthError(false);
+                }catch(error){
+                    console.log("Registration Error: ", error)
+                    setIsAuthError(true);
+                    setAuthError(error.message)
+                } 
+            }
+            else{
+                try{
+                    await registerUser(userEmail, userPass)
+                    await customersTable.add({
+                        "fname": firstName,
+                        "lname": lastName,
+                        "phone": userPhone,
+                        "email": userEmail,
+                        "pass": userPass,
+                        "datejoined": time
+                        })
+                    await history.push("/") 
+                    await  setIsAuthError(false);
+                }catch(error){
+                    console.log("Registration Error: ", error)
+                    setIsAuthError(true);
+                    setAuthError(error.message)
+                }  
+            }
+        }else {
             setIsAuthError(true);
-            setAuthError(error.message)
-        }   
+            setAuthError("Please Ensure Your Password is the same as the Confirm Password")
+        }
+ 
+    }
+
+    const checkAdmin = (e) => {
+        if (e.target.style.backgroundColor === 'rgb(202, 151, 3)'){
+            e.target.style.backgroundColor = '#002147'
+            setIsAdmin(false);
+        }
+        else{
+            e.target.style.backgroundColor = '#ca9703'
+            setIsAdmin(true);
+        }
     }
 
     return (
-        <section className="login_section reg_section">
-        
-            <div className="login_logo">
-                {/* <!-- <img src="images/logo.png" alt="Site Logo" /> --> */}
+        <section className="login_section reg_section"> 
+
+            <div className="check_admin" onClick={checkAdmin}>
+                <p>Are you an admin?</p>
             </div>
-            <h2>Customer Sign Up</h2>
+            <h2>Cafe Kora Sign Up</h2>
 
             <form onSubmit={handleRegister} className="registration_form">
                 {
-                isAuthError ?
+                isAuthError &&
                 <div className="form_error form_inputs">
                     <p>{authError}</p>
                 </div> 
-                :
-                <>
-                </>               
+         
                 }
                 
                 <label className="form_labels">First Name:</label>
                 <input onChange={handleChange} type="text" className="form_inputs" name="registerFname" />
                 <label className="form_labels">Last Name:</label>
                 <input onChange={handleChange} type="text" className="form_inputs" name="registerLname" />
+                <label className="form_labels">Phone Number:</label>
+                <input onChange={handleChange} type="text" className="form_inputs" name="registerPhone" /> 
+                {
+                    isAdmin &&
+                    <>
+                    <label className="form_labels">Cafe Kora Role:</label>
+                    <select onChange={handleChange} className="form_inputs" id="select_role">
+                        <option value="0">Select Cafe Kora Admin Role:</option>
+                        <option value="Adminstrator">Adminstrator</option>
+                        <option value="Employee">Employee</option>
+                    </select>
+                    </>
+                }
+ 
                 <label className="form_labels">Email:</label>
                 <input onChange={handleChange} type="email" className="form_inputs" name="registerEmail" />
                 <label className="form_labels">Password:</label>
@@ -95,9 +156,11 @@ export default function Register() {
                 <p>Already have an account?
                     <Link to="/login"> Sign In</Link>
                 </p>
-                <p>
-                    <Link to="/"><i className="fas fa-chevron-left"></i>Back Home</Link>
-                </p>
+                <div className="back_home_div">
+                    <Link to="/">
+                    <Home />Back Home
+                    </Link>
+                </div>
             </div>
         </section>        
     )

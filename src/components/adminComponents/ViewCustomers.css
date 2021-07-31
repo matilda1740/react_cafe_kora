@@ -1,0 +1,29 @@
+.customers_table {
+  width: 80%;
+  height: 500px;
+  /* background-color: rgba(0, 111, 247, 0.1); */
+  background-color: #002147;
+
+  box-shadow: rgba(0, 19, 43, 0.5) 0px 20px 20px;
+  padding: 30px 0 0 30px;
+  border-collapse: collapse;
+
+  border-radius: 8px;
+  margin: 0 0 0 30px;
+  overflow: scroll;
+}
+thead {
+  background-color: rgba(0, 111, 247, 0.1);
+  width: 100%;
+  height: 80px;
+}
+tbody {
+  text-align: center;
+}
+.customers_table tbody tr {
+  line-height: 80px !important;
+}
+
+.customers_table tbody tr:nth-of-type(even) {
+  background-color: rgba(0, 111, 247, 0.1);
+}

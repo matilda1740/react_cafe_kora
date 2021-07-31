@@ -10,7 +10,6 @@ export default function Header() {
     }
     
     return (
-
     <section className="header_section">
         <div className="header_left">
 
@@ -22,7 +21,7 @@ export default function Header() {
             {
                 currentUser ?
                  <>
-                   <Link to="/login">Welcome, {currentUser.email}</Link>
+                   <Link to="/profile">Welcome, {currentUser.email}</Link>
                   <button onClick={handleLogout} className="logout_btn">Log Out</button>
                  </>
                 :

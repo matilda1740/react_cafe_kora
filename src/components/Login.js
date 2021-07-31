@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import './Login.css'
 import { useAuth } from '../contexts/AuthContext'
+import { Home } from '@material-ui/icons';
  
 export default function Login() {
     const history = useHistory();
@@ -11,6 +12,8 @@ export default function Login() {
     const [ loginPass, setLoginPass] = useState();
     const [isLoginError, setIsLoginError] = useState(false);
     const [ loginError, setLoginError] = useState();    
+
+    const [isAdmin, setIsAdmin] = useState(false);
 
     const handleChange = e => {
         if(e.target.name === "login_email"){
@@ -32,13 +35,22 @@ export default function Login() {
             console.log("Login Error: ", error)
         }
     }
-
+    const checkAdmin = (e) => {
+        if (e.target.style.backgroundColor === 'rgb(202, 151, 3)'){
+            e.target.style.backgroundColor = '#002147'
+            setIsAdmin(false);
+        }
+        else{
+            e.target.style.backgroundColor = '#ca9703'
+            setIsAdmin(true);
+        }
+    }
     return (
         <section className="login_section">
-            <div className="login_logo">
-                {/* <!-- <img src="images/logo.png" alt="Site Logo" /> --> */}
+            <div className="check_admin" onClick={checkAdmin}>
+                <p>Are you an admin?</p>
             </div>
-            <h2>Customer Log In</h2>
+            <h2>Cafe Kora Log In</h2>
                 {
                 isLoginError ?
                 <div className="form_error form_inputs">
@@ -57,17 +69,16 @@ export default function Login() {
         
                 <button type="submit" className="form_btn ">Log In</button>
             </form>
-                {
-                    isLoginError &&
-                    <div className="form_btn ">{loginError}</div>
-                }
-                
-        
+                 
             <div className="login_footer">
                 <p>Are you a new user?
-                    <Link to="/register">Sign Up</Link>
+                    <Link to="/register"> Sign Up</Link>
                 </p>
-                <Link className="back_home" to="/"><i className="fas fa-chevron-left"></i>Back Home</Link>
+                <div className="back_home_div">
+                    <Link to="/">
+                    <Home />Back Home
+                    </Link>
+                </div>
             </div>
         </section>
     )

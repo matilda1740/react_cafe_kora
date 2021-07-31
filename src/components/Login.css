@@ -98,7 +98,8 @@
 }
 
 /************ LOGIN PAGE *************/
-.login_section {
+.login_section,
+.role_section {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -116,6 +117,10 @@
   height: 700px !important;
   margin: 0% 0 0 40%;
 }
+.role_section {
+  margin: 7.5% 0 0 40%;
+  height: 400px;
+}
 .registeration_parent {
   height: 700px;
   margin-top: 5%;
@@ -123,15 +128,25 @@
 .registeration_section {
   height: 100%;
 }
-.login_logo {
-  width: 100%;
-  height: 100px;
-  margin-top: 20px;
+.check_admin {
+  height: 80px;
+  width: 20%;
+  align-self: flex-end;
+  background-color: #002147;
+  /* border-radius: 8px; */
+  color: #dcdcdc;
+  text-align: center;
 }
-.login_logo img {
-  object-fit: contain;
+.check_admin p {
   width: 100%;
   height: 100%;
+  padding-top: 10px;
+}
+.check_admin:hover {
+  cursor: pointer;
+}
+.login_section h2 {
+  /* margin-top: 80px; */
 }
 
 .login_form,
@@ -179,13 +194,17 @@
 .login_footer a {
   color: #002147;
 }
-.back_home {
+.back_home_div {
   width: 50%;
+}
+.back_home_div a {
+  width: 100%;
   display: flex;
   justify-content: flex-end;
+  align-items: center;
 }
-.back_home * {
-  padding: 0 10px;
+.back_home_div a svg {
+  margin-right: 10px;
 }
 .form_error {
   border: 1px solid rgb(210, 4, 45, 0.8);
