@@ -23,9 +23,8 @@ export default function Register() {
 
     const [isAdmin, setIsAdmin] = useState(false);
 
-    const customersTable = db.collection("customer")
-    const adminTable = db.collection("admin")
-    
+    const userTable = db.collection("user");
+
     const handleChange = (e) => {
         const selectRole = document.getElementById("select_role")
         
@@ -50,45 +49,26 @@ export default function Register() {
         e.preventDefault();
 
         if(userPass === userConfirmPass){
-            if(isAdmin){
-                try{
-                    console.log(userEmail, userPass)
-                    await registerUser(userEmail, userPass)
-                    await adminTable.add({
-                        "fname": firstName,
-                        "lname": lastName,
-                        "phone": userPhone,
-                        "role" : userRole,
-                        "email": userEmail,
-                        "pass": userPass,
-                        "datejoined": time
-                        })
-                    await history.push("/admin") 
-                    await  setIsAuthError(false);
-                }catch(error){
-                    console.log("Registration Error: ", error)
-                    setIsAuthError(true);
-                    setAuthError(error.message)
-                } 
-            }
-            else{
-                try{
-                    await registerUser(userEmail, userPass)
-                    await customersTable.add({
-                        "fname": firstName,
-                        "lname": lastName,
-                        "phone": userPhone,
-                        "email": userEmail,
-                        "pass": userPass,
-                        "datejoined": time
-                        })
-                    await history.push("/") 
-                    await  setIsAuthError(false);
-                }catch(error){
-                    console.log("Registration Error: ", error)
-                    setIsAuthError(true);
-                    setAuthError(error.message)
-                }  
+            try{
+                // console.log(userEmail, userPass)
+                await registerUser(userEmail, userPass)
+                    .then( (data) => console.log(data))
+                await userTable.add({
+                    "userID": userTable.doc().id,
+                    "fname": firstName,
+                    "lname": lastName,
+                    "phone": userPhone,
+                    "type" : isAdmin ? "admin" : "customer",
+                    "email": userEmail,
+                    "pass": userPass,
+                    "datejoined": time
+                    })                    
+                await isAdmin ? history.push("/admin") : history.push("/")
+                await  setIsAuthError(false);
+            }catch(error){
+                console.log("Registration Error: ", error)
+                setIsAuthError(true);
+                setAuthError(error.message)
             }
         }else {
             setIsAuthError(true);
@@ -135,11 +115,13 @@ export default function Register() {
                     isAdmin &&
                     <>
                     <label className="form_labels">Cafe Kora Role:</label>
-                    <select onChange={handleChange} className="form_inputs" id="select_role">
+                    <p className="admin_p form_inputs">Adminstrator</p>
+
+                    {/* <select onChange={handleChange} className="form_inputs" id="select_role">
                         <option value="0">Select Cafe Kora Admin Role:</option>
                         <option value="Adminstrator">Adminstrator</option>
                         <option value="Employee">Employee</option>
-                    </select>
+                    </select> */}
                     </>
                 }
  

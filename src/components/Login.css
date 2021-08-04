@@ -160,7 +160,9 @@
 
   padding-top: 20px;
 }
-
+.admin_p {
+  background-color: #ffffff;
+}
 .login_form .form_inputs,
 .registration_form .form_inputs,
 .form_btn {

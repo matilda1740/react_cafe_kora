@@ -1,64 +1,50 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './AdminHome.css'
 import { db } from '../firebase'
 
-import {BusinessCenter, Collections, GroupWork, Home, Inbox, People, Person, ShowChart } from '@material-ui/icons';
+import {BusinessCenter, Collections, Flight, GroupWork, Home, Inbox, Language, People, Person, ShowChart } from '@material-ui/icons';
 import MainDash from './MainDash';
 import { Link, Route } from 'react-router-dom';
 import ViewCustomers from './ViewCustomers';
 import ViewEmployees from './ViewEmployees';
 
-
-
+/*
+    1. DELETE USERS
+    2. UPDATE USER INFO
+    3. SORT USERS
+    4. SEARCH USERS
+*/
 export default function AdminHome() {
 
     const [users, setUsers] = useState([]);
     const [team, setTeam] = useState([]);
 
+    const getUsers = async () => {
+        const customersRef = db.collection('user')
+        const snapshot = await customersRef
+                            .onSnapshot((snapshot) => {
+                                snapshot.docs.forEach( user => {
+                                    // ChECK IF USER EXISTS IN STATE
+                                    const userExists = users.find( person => person.userID === user.data().userID)  
+                                    const adminExists = team.find( person => person.userID === user.data().userID)                           
+                                    if(!userExists && !adminExists){
+                                        user.data().type === 'customer' ?
+                                            setUsers(prevState => [...prevState, user.data()])
+                                            :
+                                            user.data().type === 'admin' &&
+                                            setTeam(prevState => [...prevState, user.data()])
+                                    }
+                                })
+                                
+                            }, error =>{
+                                console.log(error)
+                            })
 
-    const getCustomers = async () => {
-        const customersRef = db.collection('customer')
-        const snapshot = await customersRef.get()
 
-        if(snapshot.empty){
-            console.log("No Customer Data Found!")
-        }else {
-            let myArray = []
-            snapshot.forEach( user => {
-                myArray.push(user.data())
-            })
-            setUsers(myArray)
-        }     
     }
-
-    const getTeam = async () => {
-        const AdminRef = db.collection('admin')
-        const snapshot = await AdminRef.get()
-
-        if(snapshot.empty){
-            console.log("No Admins Data Found!")
-        }else {
-            let myArray = []
-            snapshot.forEach( user => {
-                myArray.push(user.data())
-            })
-            setTeam(myArray)
-        }     
-    }
-
-    window.location.pathname === '/admin/customers' && 
-        getCustomers();
-
-    window.location.pathname === '/admin/team' && 
-        getTeam();
 
     const handleSelection = (e) => {
-        let action = e.target.textContent
-        if(action === "Customers"){
-            getCustomers();
-        }else if(action === "Cafe Kora Team"){
-            getTeam();
-        }
+
     }
     return (
         <section className="admin_main_body">
@@ -73,17 +59,18 @@ export default function AdminHome() {
                     <Link to="/admin">Home</Link>
                 </p>
 
-                <p className="sidebar_parts" onClick={handleSelection}>
+                <p className="sidebar_parts" onClick={getUsers}>
                     <People className="sidebar_icons"/>
                     <Link to="/admin/customers">Customers</Link>
                 </p>
 
-                <p className="sidebar_parts" onClick={handleSelection}>
+                <p className="sidebar_parts" onClick={getUsers}>
                     <GroupWork className="sidebar_icons"/>
                     <Link to="/admin/team">Cafe Kora Team</Link>
                 </p>
                 <p className="sidebar_parts" onClick={handleSelection}>
-                    <Inbox className="sidebar_icons"/>Orders
+                    <Collections className="sidebar_icons"/>
+                    <Link to="/admin/products">Products</Link>
                 </p>
 
                 <p className="sidebar_parts" onClick={handleSelection}>
@@ -91,7 +78,7 @@ export default function AdminHome() {
                 </p>
                 
                 <p className="sidebar_parts" onClick={handleSelection}>
-                    <Collections className="sidebar_icons"/>Categories
+                    <Inbox className="sidebar_icons"/>Categories
                 </p>
                 
                 <p className="sidebar_parts" onClick={handleSelection}>
@@ -101,7 +88,11 @@ export default function AdminHome() {
                 <p className="sidebar_parts" onClick={handleSelection}>
                     <Person className="sidebar_icons"/>Profile
                 </p>
-            
+
+                <p className="sidebar_parts">
+                    <Language className="sidebar_icons"/>
+                    <Link to="/">Website Home</Link>
+                </p>          
             </div>
 
             </section>
@@ -110,10 +101,10 @@ export default function AdminHome() {
                 {/* PUSH DATA ACCORDING TO THE USER CLICKS */}
                 <Route exact path="/admin" component={MainDash} />
                 <Route exact path="/admin/customers">
-                    <ViewCustomers customers={users}/>
+                    <ViewCustomers onClick={getUsers} getUsers={getUsers} customers={users}/>
                 </Route> 
                 <Route exact path="/admin/team">
-                    <ViewEmployees team={team}/>
+                    <ViewEmployees onClick={getUsers} team={team}/>
                 </Route>                 
             </div>
         </section>
