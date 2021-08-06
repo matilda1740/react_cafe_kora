@@ -1,0 +1,3 @@
+export const FETCH_USERS = 'FETCH_USERS';
+// export const FETCH_BLOG_DETAILS = 'FETCH_BLOG_DETAILS';
+// export const CHANGE_PAGINATE = 'CHANGE_PAGINATE';

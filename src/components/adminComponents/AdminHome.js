@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react'
-import './AdminHome.css'
-import { db } from '../firebase'
-
-import {BusinessCenter, Collections, Flight, GroupWork, Home, Inbox, Language, People, Person, ShowChart } from '@material-ui/icons';
-import MainDash from './MainDash';
+import React, { useState } from 'react'
 import { Link, Route } from 'react-router-dom';
+
+import './AdminHome.css'
+
+import { db } from '../firebase'
+import { displayUser } from '../../actions/entry';
+import {BusinessCenter, Collections, GroupWork, Home, Inbox, Language, People, Person, ShowChart } from '@material-ui/icons';
+import MainDash from './MainDash';
 import ViewCustomers from './ViewCustomers';
 import ViewEmployees from './ViewEmployees';
 
@@ -21,24 +23,25 @@ export default function AdminHome() {
 
     const getUsers = async () => {
         const customersRef = db.collection('user')
-        const snapshot = await customersRef
-                            .onSnapshot((snapshot) => {
-                                snapshot.docs.forEach( user => {
-                                    // ChECK IF USER EXISTS IN STATE
-                                    const userExists = users.find( person => person.userID === user.data().userID)  
-                                    const adminExists = team.find( person => person.userID === user.data().userID)                           
-                                    if(!userExists && !adminExists){
-                                        user.data().type === 'customer' ?
-                                            setUsers(prevState => [...prevState, user.data()])
-                                            :
-                                            user.data().type === 'admin' &&
-                                            setTeam(prevState => [...prevState, user.data()])
-                                    }
-                                })
-                                
-                            }, error =>{
-                                console.log(error)
-                            })
+        const snapshot = 
+        await customersRef
+            .onSnapshot((snapshot) => {
+                snapshot.docs.forEach( user => {
+                    // ChECK IF USER EXISTS IN STATE
+                    const userExists = users.find( person => person.userID === user.data().userID)  
+                    const adminExists = team.find( person => person.userID === user.data().userID)                           
+                    if(!userExists && !adminExists){
+                        user.data().type === 'customer' ?
+                            setUsers(prevState => [...prevState, user.data()])
+                            :
+                            user.data().type === 'admin' &&
+                            setTeam(prevState => [...prevState, user.data()])
+                    }
+                })
+                
+            }, error =>{
+                console.log(error)
+            })
 
 
     }
@@ -101,9 +104,13 @@ export default function AdminHome() {
                 {/* PUSH DATA ACCORDING TO THE USER CLICKS */}
                 <Route exact path="/admin" component={MainDash} />
                 <Route exact path="/admin/customers">
-                    <ViewCustomers onClick={getUsers} getUsers={getUsers} customers={users}/>
+                    {/* <ViewCustomers customers={displayUser}/> */}
+
+                    <ViewCustomers onClick={getUsers} customers={users}/>
                 </Route> 
                 <Route exact path="/admin/team">
+                    {/* <ViewEmployees /> */}
+
                     <ViewEmployees onClick={getUsers} team={team}/>
                 </Route>                 
             </div>

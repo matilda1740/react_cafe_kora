@@ -1,13 +1,28 @@
 import React from 'react'
-import { useEffect } from 'react'
 import './ViewCustomers.css'
 import { db } from '../firebase'
 
 import {Delete } from '@material-ui/icons';
 
-export default function ViewCustomers({ getUsers, customers }) {
-
-    // deleteUsers = (e) => e.target.parentNode.parentNode.parentNode.id;  
+export default function ViewCustomers({ customers }) {
+ 
+    // console.log(customers)
+    const customersRef = db.collection('user')
+    
+    // customersRef.onSnapshot((snapshot) => {
+    //             snapshot.docChanges().map( change => {
+    //                 console.log(change)
+    //             })
+    //         })
+    // LISTEN TO DATABASE CHANGES
+    const updateCustomers = async () => {
+        // const snapshot = 
+        //     await customersRef.onSnapshot((snapshot) => {
+        //         snapshot.docChanges().map( change => {
+        //             console.log(change)
+        //         })
+        //     })
+    }
 
     const handleDelete = async (e) => {
         e.preventDefault();
@@ -15,7 +30,6 @@ export default function ViewCustomers({ getUsers, customers }) {
 
         if(window.confirm("Are You Sure you want to delete this record")){
             try{ 
-                const customersRef = db.collection('user')
                 const snapshot = await customersRef.where("userID", "==", `${delUserID}`).get();
                 
                 if(snapshot.empty){
@@ -33,6 +47,7 @@ export default function ViewCustomers({ getUsers, customers }) {
 
 
     }
+
 
     return (
         <>
