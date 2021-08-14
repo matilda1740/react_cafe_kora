@@ -1,0 +1,68 @@
+.update_section {
+  display: flex;
+  flex-direction: column;
+  /* background-color: #dcdcdc; */
+  /* color: black; */
+
+  background-color: #002147;
+  color: #ca9703;
+
+  border-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 30px 90px;
+  width: 80%;
+  height: 700px;
+  margin: 0 0 0 25%;
+}
+.up_prod {
+  margin: 3% 0 0 10%;
+}
+.update_section h2 {
+  width: 100%;
+  text-align: center;
+}
+.update_column {
+  width: 100%;
+  height: 90%;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  /* order: 1; */
+}
+.update_left,
+.update_right {
+  width: 40%;
+  /* order: 1; */
+  margin: 0 5%;
+}
+.update_left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.update_left * {
+  margin: 20px 0;
+}
+.update_section .form_inputs {
+  background-color: #f4f4f4;
+}
+.update_section .form_error {
+  border: 1px solid rgb(210, 4, 45, 0.4);
+  background-color: rgb(244, 194, 194, 0.9);
+  color: black;
+}
+#display_userImage {
+  width: 300px !important;
+  height: 300px !important;
+  border-radius: 50%;
+  object-fit: contain !important;
+  /* display: none; */
+}
+.update_section .form_btn {
+  background-color: #ca9703;
+}
+.update_section .login_footer a {
+  color: #ca9703;
+}

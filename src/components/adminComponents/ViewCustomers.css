@@ -1,5 +1,5 @@
 .customers_table {
-  width: 80%;
+  width: 90%;
   height: 500px;
   /* background-color: rgba(0, 111, 247, 0.1); */
   background-color: #002147;
@@ -26,4 +26,14 @@ tbody {
 
 .customers_table tbody tr:nth-of-type(even) {
   background-color: rgba(0, 111, 247, 0.1);
+}
+
+.action_icons {
+  margin: 0 10px;
+  transition: all 0.3s ease-in-out;
+}
+.action_icons:hover {
+  cursor: pointer;
+  color: #c40058;
+  transform: scale(1.2);
 }

@@ -1,51 +1,32 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './ViewCustomers.css'
 import { db } from '../firebase'
 
-import {Delete } from '@material-ui/icons';
+import {Create, Delete } from '@material-ui/icons';
+import { useStateValue } from '../StateProvider';
+import { Link } from 'react-router-dom';
 
-export default function ViewCustomers({ customers }) {
- 
-    // console.log(customers)
-    const customersRef = db.collection('user')
-    
-    // customersRef.onSnapshot((snapshot) => {
-    //             snapshot.docChanges().map( change => {
-    //                 console.log(change)
-    //             })
-    //         })
-    // LISTEN TO DATABASE CHANGES
-    const updateCustomers = async () => {
-        // const snapshot = 
-        //     await customersRef.onSnapshot((snapshot) => {
-        //         snapshot.docChanges().map( change => {
-        //             console.log(change)
-        //         })
-        //     })
+export default function ViewCustomers() {
+
+    const [ { users }, dispatch] = useStateValue();
+       
+    const handleDelete = (e) => {
+        e.preventDefault();
+        let targetID = e.target.parentNode.parentNode.parentNode.parentNode.id;
+        if(window.confirm("Are You Sure you want to delete this record")){
+            dispatch({
+                type: "delete_user",
+                targetID: targetID
+            }) 
+        }
     }
 
-    const handleDelete = async (e) => {
-        e.preventDefault();
-        let delUserID = e.target.parentNode.parentNode.parentNode.id;
-
-        if(window.confirm("Are You Sure you want to delete this record")){
-            try{ 
-                const snapshot = await customersRef.where("userID", "==", `${delUserID}`).get();
-                
-                if(snapshot.empty){
-                    console.log("No Customer Data Found!")
-                }else {
-                    snapshot.forEach( user => {
-                        customersRef.doc(user.id).delete() //_working
-                        console.log(user.data().fname, "Deleted From DB")                    
-                    })
-                }           
-            }catch(error){
-                console.log("Error: ", error)
-            }
-        }
-
-
+    const handleUpdate = (e) => {
+        let targetID = e.target.parentNode.parentNode.parentNode.id;
+        dispatch({
+            type: "update_user",
+            targetID: targetID
+        }) 
     }
 
 
@@ -55,14 +36,13 @@ export default function ViewCustomers({ customers }) {
             <h4 className="welcome_text">
                 Cafe Kora Customers 
             </h4>
-            <p className="welcome_ptag">Total Customers: {customers?.length}</p>
+            {/* <p className="welcome_ptag">Total Customers: {users?.length}</p> */}
             
         </div>
         {
+            users?.length ?
 
-            customers?.length ?
         <>
-
         <div className="operations_section">
 
         </div>
@@ -80,15 +60,21 @@ export default function ViewCustomers({ customers }) {
                 </thead>
                 <tbody>
                 {
-                    customers.map( customer => 
+                    users.map( customer => 
+                        customer.type === "customer" &&
                         <tr key={customer.userID} id={customer.userID}>
                             <td>{customer.fname}</td>
                             <td>{customer.lname}</td>
                             <td>{customer.email}</td>
                             <td>{customer.phone}</td>
                             <td>{customer.datejoined.toDate().toDateString()}</td>
-                            <td>
-                            <Delete onClick={handleDelete}/>
+                            <td><p><Delete onClick={handleDelete} className="action_icons"/>
+                            <Link to={`/admin/update_products/${customer.userID}`}>
+                                <Create
+                                className="action_icons"
+                                />                                
+                            </Link>
+                            </p>
                             </td>
                         </tr>
                     )

@@ -1,43 +1,54 @@
+import { AddShoppingCart } from '@material-ui/icons';
 import React from 'react'
+import { useState } from 'react';
+import { useStateValue } from './StateProvider';
 
 export default function Pastries() {
+
+    const [ { products}, dispatch] = useStateValue();
+    const [currentItem, setCurrentItem] = useState();
+
+        const findSelection = async (e) => {
+        const targetID = e.target.parentNode.parentNode.parentNode.parentNode.id
+
+        if(targetID){
+            setCurrentItem(...products.filter( prod => prod.product_id === targetID && prod))
+        }
+    }
+    const addToCart = async (e) => { 
+        findSelection(e).then( data => {
+            if(currentItem !== undefined){
+                dispatch({
+                type: "add_to_cart",
+                item: currentItem
+                })
+            }
+        })
+    }
+    
     return (
         <section className="products_page">
-            <div className="products_div">
-                <div className="products_image_div">
-                    <img src="images/pastries/nobg_croissant.png" alt=""/>
-                </div>
-                <div className="products_desc_div">
-                    <h3 className="product_title">Croissants</h3>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi magnam at consequuntur ducimus porro
-                        consectetur unde. Fugiat quidem id veritatis praesentium, quas numquam fuga doloremque maxime assumenda
-                        repellat sit nisi.</p>
-                </div>
-            </div>
+        {
+            products.map( (product, i) => 
 
-            <div className="products_div products_div_reversed">
+            product.product_cat === "pastries" &&
+            <div key={product.product_id} className={(i % 2 === 0) ? "products_div" : "products_div products_div_reversed"} >
                 <div className="products_image_div">
-                    <img src="images/pastries/nobg_chocolatecroissant.png" alt=""/>
+                    <img className="product_img" src={product.product_image} alt="Product"/>
                 </div>
                 <div className="products_desc_div">
-                    <h3 className="product_title">Chocolate Croissants</h3>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi magnam at consequuntur ducimus porro
-                        consectetur unde. Fugiat quidem id veritatis praesentium, quas numquam fuga doloremque maxime assumenda
-                        repellat sit nisi.</p>
+                    <h3 className="product_title">{product.product_name}</h3>
+                    <p>{product.product_descr} {product.product_descr} {product.product_descr} {product.product_descr}
+                    </p>
+                    <button className="btn_purchase">
+                        <p className="product_price">Ksh. {product.product_price}</p>
+                        <p><AddShoppingCart onClick={addToCart}/></p>
+                    </button>
                 </div>
             </div>
-        
-            <div className="products_div">
-                <div className="products_image_div">
-                    <img src="images/pastries/nobg_chocolatecroissant.png" alt=""/>
-                </div>
-                <div className="products_desc_div">
-                    <h3 className="product_title">Chocolate Croissants</h3>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi magnam at consequuntur ducimus porro
-                        consectetur unde. Fugiat quidem id veritatis praesentium, quas numquam fuga doloremque maxime assumenda
-                        repellat sit nisi.</p>
-                </div>
-            </div>  
-        </section>
+            )
+
+        }
+        </section>    
     )
 }

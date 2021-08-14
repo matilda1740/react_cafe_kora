@@ -2,7 +2,7 @@ import React from 'react'
 import { ArrowDownward, ArrowUpward } from '@material-ui/icons'
 import { Link } from 'react-router-dom';
 
-export default function MainDash() {
+export default function MainDash({customers, team}) {
     return (
         <>
         <div className="welcome_bar">
@@ -17,7 +17,9 @@ export default function MainDash() {
             <div className="display_area_left">
                 <Link to="/admin/customers" className="display_box">
                        <h4 className="display_box_title">Customers</h4>
-                    <p className="display_box_number">45,000</p>
+                    <p className="display_box_number">45,000
+                        {/* { customers?.length } */}
+                    </p>
                     <div className="display_growth">
                         <ArrowUpward className="growth_icon upward"/> 5.5 %
                     </div>                 
