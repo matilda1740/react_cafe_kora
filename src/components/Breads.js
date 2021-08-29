@@ -1,56 +1,63 @@
-import React from 'react'
+import { AddShoppingCart } from '@material-ui/icons';
+import React, { useEffect, useState } from 'react'
 import "../App.css";
+import { useStateValue } from './StateProvider';
 
 export default function Breads() {
+    const [ { products}, dispatch] = useStateValue();
+    const [currentItem, setCurrentItem] = useState();
+
+    const loadProducts = async () => {
+        dispatch({
+            type: "fetch_products"
+        })       
+    }
+
+    const findSelection = async (e) => {
+        const targetID = e.target.parentNode.parentNode.parentNode.parentNode.id
+
+        if(targetID){
+            setCurrentItem(...products.filter( prod => prod.product_id === targetID && prod))
+        }
+    }
+    const addToCart = async (e) => { 
+        findSelection(e).then( data => {
+            if(currentItem !== undefined){
+                dispatch({
+                type: "add_to_cart",
+                item: currentItem
+                })
+            }
+        })
+    }
+    
+    useEffect(() => {
+        loadProducts().then( () => console.log())
+
+    }, []) 
     return (
         <section className="products_page">
-            <div className="products_div">
+        {
+            products.map( (product, i) => 
+            product.product_cat === "breads" &&
+            <div id={product.product_id}  key={product.product_id} className={(i % 2 === 0) ? "products_div" : "products_div products_div_reversed"} >
                 <div className="products_image_div">
-                    <img className="product_img" src="images/breads/idk3.png" alt=""/>
+                    <img className="product_img" src={product.product_image} alt="Product"/>
                 </div>
                 <div className="products_desc_div">
-                    <h3 className="product_title">Sourdough</h3>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi magnam at consequuntur ducimus porro
-                        consectetur unde. Fugiat quidem id veritatis praesentium, quas numquam fuga doloremque maxime assumenda
-                        repellat sit nisi.
+                    <h3 className="product_title">{product.product_name}</h3>
+                    <p>{product.product_descr} {product.product_descr} {product.product_descr} {product.product_descr}
                     </p>
                     <button className="btn_purchase">
-                        <p className="product_price">Ksh. 450.00 </p>
-                        <hr className="path"/>
-                        <p>
-                            {/* <!-- fiiled heart --> */}
-                            {/* <!-- <i class="fas fa-heart"></i> --> */}
-                            <i class="far fa-heart"></i>
-                            <i class="fas fa-cart-plus"></i>
+                        <p className="product_price">Ksh. {product.product_price}</p>
+                        <p><AddShoppingCart onClick={addToCart}/>
                         </p>
                     </button>
                 </div>
             </div>
-        
-            <div className="products_div products_div_reversed">
-                <div className="products_image_div">
-                    <img src="images/breads/nobg_barbaribread.png" alt=""/>
-                </div>
-                <div className="products_desc_div">
-                    <h3 className="product_title">BarBari Bread</h3>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi magnam at consequuntur ducimus porro
-                        consectetur unde. Fugiat quidem id veritatis praesentium, quas numquam fuga doloremque maxime assumenda
-                        repellat sit nisi.</p>
-                </div>
-            </div>
+            )
 
-            <div className="products_div">
-                <div className="products_image_div">
-                    <img src="images/breads/nobg_brioche.png" alt=""/>
-                </div>
-                <div className="products_desc_div">
-                    <h3 className="product_title">Brioche Bread</h3>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi magnam at consequuntur ducimus porro
-                        consectetur unde. Fugiat quidem id veritatis praesentium, quas numquam fuga doloremque maxime assumenda
-                        repellat sit nisi.</p>
-                </div>
-            </div>
-
+        }
         </section>
 
     )

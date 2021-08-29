@@ -10,6 +10,8 @@ export default function Register() {
 
     const { currentUser, registerUser } = useAuth(); 
 
+    const { userDetails, setUserDetails } = useState();
+
     const [firstName, setFirstName] = useState();
     const [lastName, setLastName] = useState();
     const [userPhone, setUserPhone] = useState();
@@ -25,8 +27,8 @@ export default function Register() {
 
     const userTable = db.collection("user");
 
-    const handleChange = (e) => {
-        const selectRole = document.getElementById("select_role")
+    const handleChange = input => async (e) => {
+        e.preventDefault();
         
         if(e.target.name === "registerFname"){
             setFirstName(e.target.value)
@@ -40,14 +42,11 @@ export default function Register() {
             setUserPass(e.target.value)
         }else if(e.target.name === "registerConfirmPass"){
             setConfirmPass(e.target.value)
-        }else if (selectRole.id === "select_role"){
-            setUserRole(selectRole.value)
         }
     }
 
     const handleRegister = async  e => {
         e.preventDefault();
-
         if(userPass === userConfirmPass){
             try{
                 // console.log(userEmail, userPass)
@@ -106,11 +105,11 @@ export default function Register() {
                 }
                 
                 <label className="form_labels">First Name:</label>
-                <input onChange={handleChange} type="text" className="form_inputs" name="registerFname" />
+                <input onChange={handleChange("registerFname")} type="text" className="form_inputs" name="registerFname" />
                 <label className="form_labels">Last Name:</label>
-                <input onChange={handleChange} type="text" className="form_inputs" name="registerLname" />
+                <input onChange={handleChange("registerLname")} type="text" className="form_inputs" name="registerLname" />
                 <label className="form_labels">Phone Number:</label>
-                <input onChange={handleChange} type="text" className="form_inputs" name="registerPhone" /> 
+                <input onChange={handleChange("registerPhone")} type="text" className="form_inputs" name="registerPhone" /> 
                 {
                     isAdmin &&
                     <>
@@ -126,11 +125,11 @@ export default function Register() {
                 }
  
                 <label className="form_labels">Email:</label>
-                <input onChange={handleChange} type="email" className="form_inputs" name="registerEmail" />
+                <input onChange={handleChange("registerEmail")} type="email" className="form_inputs" name="registerEmail" />
                 <label className="form_labels">Password:</label>
-                <input onChange={handleChange} type="password" className="form_inputs" name="registerPass" />
+                <input onChange={handleChange("registerPass")} type="password" className="form_inputs" name="registerPass" />
                 <label className="form_labels">Confirm Password:</label>
-                <input onChange={handleChange} type="password" className="form_inputs" name="registerConfirmPass" password="" autoComplete="new-password" />
+                <input onChange={handleChange("registerConfirmPass")} type="password" className="form_inputs" name="registerConfirmPass" password="" autoComplete="new-password" />
                 
                 <button type="submit" className="form_btn ">Sign Up</button>
             </form>

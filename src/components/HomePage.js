@@ -1,3 +1,4 @@
+import { Directions, PlayForWork } from '@material-ui/icons'
 import React from 'react'
 import { Link } from 'react-router-dom'
 
@@ -6,11 +7,7 @@ export default function HomePage() {
     <section className="main_page_section">
         <div className="home_banner">
             <div className="home_left">
-                {/* <!-- REM Overlay Bottom left corner + add dashed border --> */}
-                {/* <div className="social_icons_div">
-                    <Link to=""><i class="fab fa-twitter"></i></Link>
-                    <Link to=""><i class="fab fa-facebook"></i></Link>
-                </div> */}
+
             </div>
             <div className="home_right">
                 <h3 className="product_title">Cafe Kora</h3>
@@ -21,7 +18,8 @@ export default function HomePage() {
 
         <div className="home_banner_overlay">
             <img src="images/nobg_mb3.png" alt="Coffee Main"/>
-            <Link to="#breads"></Link>
+                
+            <a href="#breads"><PlayForWork /></a>
         </div>
 
         <div className="site_headers">
@@ -36,8 +34,10 @@ export default function HomePage() {
             <div className="products_desc_div">
                 <h3 className="product_title">Breads</h3>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi magnam at consequuntur ducimus porro consectetur unde. Fugiat quidem id veritatis praesentium, quas numquam fuga doloremque maxime assumenda repellat sit nisi.</p>
-                <Link to="/bread">
-                <button className="btn_view">View Bread Collection</button>
+                <Link to="/breads">
+                <button className="btn_view">
+                <Directions />
+                View Bread Collection</button>
                 </Link>
             </div>
         </div>
@@ -53,7 +53,8 @@ export default function HomePage() {
                     repellat sit nisi.
                 </p>
                 <Link to="/pastries">
-                <button className="btn_view">View Pastries Collection</button></Link>
+                <button className="btn_view">
+                <Directions />View Pastries Collection</button></Link>
             </div>
         </div>
 

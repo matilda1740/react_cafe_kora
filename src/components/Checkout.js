@@ -1,47 +1,42 @@
 import React from 'react'
+import { Add, Remove, CreditCard, Archive, DirectionsCar } from '@material-ui/icons'
+
+import './Checkout.css'
+import { useStateValue } from './StateProvider';
 
 export default function Checkout() {
+    const [ {cart}, dispatch] = useStateValue();
+
     return (
     <section className="checkout_page">
         <div className="checkout_column">
             <div className="review_order">
                 <h4>1. REVIEW ORDER</h4>
                 
-                <div className="product_review_div">
-                    <div className="products_image_div">
-                        <img className="product_img" src="images/breads/idk3.png" alt=""/>
-                        <h3 className="product_title">Sourdough</h3>
-                    </div>
-                    <div className="products_desc_div">
-                        <div className="quantity_controls">
-                            <p>Quantity</p>
-                
-                            <i className="fas fa-minus"></i>
-                            <p>2</p>
-                            <i className="fas fa-plus"></i>
+                {
+                    cart?.length &&
+                    cart.map( product => (
+                        <div className="product_review_div">
+                            <div className="products_image_div">
+                                <img className="product_img" src="images/breads/idk3.png" alt=""/>
+                                <h3 className="product_title">{product.product_name}</h3>
+                            </div>
+                            <div className="products_desc_div">
+                                <div className="quantity_controls">
+                                    <p>Quantity</p>
+                        
+                                    <Add className="qty_icons"/>
+                                    <p>{product.quantity}</p>
+                                    <Remove className="qty_icons"/>                        </div>
+                                <button className="btn_purchase">
+                                    <p className="product_price">Ksh. {product.product_price}</p>
+                                </button>
+                            </div>
+                    
                         </div>
-                        <button className="btn_purchase">
-                            <p className="product_price">Ksh. 900.00 </p>
-                        </button>
-                    </div>
-                
-                    <div className="products_image_div">
-                        <img className="product_img" src="images/pastries/nobg_chocolatecroissant.png" alt=""/>
-                        <h3 className="product_title">Chocolate Croissants</h3>
-                    </div>
-                    <div className="products_desc_div">
-                        <div className="quantity_controls">
-                            <p>Quantity</p>
-                
-                            <i className="fas fa-minus"></i>
-                            <p>1</p>
-                            <i className="fas fa-plus"></i>
-                        </div>
-                        <button className="btn_purchase">
-                            <p className="product_price">Ksh. 550.00 </p>
-                        </button>
-                    </div>
-                </div>
+                    ))
+                }
+
             </div>
 
             {/* <!-- subtotal --> */}
@@ -63,15 +58,13 @@ export default function Checkout() {
                 <h4>3. SELECT PAYMENT METHOD</h4>
             
                 <div className="payment_info_row">
-                    <i className="fas fa-credit-card"></i>
+                    <CreditCard />
                     <p>Credit Card</p>
-                    <i className="fas fa-arrow-right"></i>
                 </div>
             
                 <div className="payment_info_row">
-                    <i className="fab fa-paypal"></i>
+                    <CreditCard />
                     <p>Paypal</p>
-                    <i className="fas fa-arrow-right"></i>
                 </div>              
             </div>
 
@@ -79,12 +72,12 @@ export default function Checkout() {
                 <h4>4. SELECT SHIPMENT METHOD</h4>
             
                 <div className="payment_info_row">
-                    <i className="fas fa-archive"></i>                        
+                    <Archive />                       
                     <p>Pickup</p>
                 </div>
             
                 <div className="payment_info_row">
-                    <i className="fas fa-car"></i>
+                    <DirectionsCar />
                     <p>Delivery</p>
                     {/* <!-- <i class="fas fa-arrow-right"></i> --> */}
                 </div>
