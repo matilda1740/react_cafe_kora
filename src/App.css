@@ -23,54 +23,11 @@ a {
   transition: all 0.3s ease-in-out;
 }
 a:hover {
-  transform: scale(1.03);
-  color: #f8f8f8;
-  cursor: pointer;
-}
-.header_section,
-.header_left,
-.header_right {
-  display: flex;
-  align-items: center;
-}
-.header_section {
-  width: 80vw;
-  height: 80px;
-  margin: 1.5% 0 1.5% 10%;
-}
-.header_left {
-  width: 33.33333333%;
-  height: 100%;
-}
-.header_right {
-  width: 66.66666667%;
-  height: 100%;
-
-  justify-content: space-evenly;
-}
-.header_right a {
-  color: #ca9703;
-  font-size: 18px;
-  transition: all 0.3s ease-in-out;
-  display: flex;
-  align-items: center;
-}
-.header_right .logout_btn {
-  background-color: #ca9703;
-  color: #f8f8f8;
-  box-shadow: rgba(0, 0, 0, 0.4) 0px 30px 90px;
-  font-size: 14px;
-  width: 20%;
-  padding: 7.5px 10px;
-  border-radius: 8px;
-  outline: none;
-  border: none;
-  transition: 0.3s ease-in-out;
-}
-.header_right .logout_btn:hover {
   transform: scale(1.02);
+  color: #f8f8f8;
   cursor: pointer;
 }
+
 .main_page_section {
   width: 80vw;
   height: 100%;
@@ -176,6 +133,44 @@ a:hover {
 #breads {
   overflow-y: scroll;
 }
+
+/**************** ALERTS *************/
+
+.user_alerts {
+  position: absolute;
+  top: 30px;
+  right: 20px;
+  height: 100px;
+  width: 300px;
+  border-radius: 8px;
+  z-index: 999999;
+  background-color: #dcdcdc;
+  box-shadow: rgba(0, 0, 0, 1) 30px 30px 90px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px 0 40px;
+  color: black;
+}
+
+.user_alerts svg {
+  font-size: 40px;
+}
+.user_alerts.success {
+  border-left: 10px solid green;
+}
+.user_alerts.success svg {
+  color: green;
+}
+.user_alerts.failure {
+  border-left: 10px solid #9b111e;
+}
+.user_alerts.failure svg {
+  color: #9b111e;
+}
+/**************** END OF ALERTS *************/
+
 .products_div {
   /* width: 80vw; */
   height: 350px;
@@ -229,13 +224,13 @@ a:hover {
   color: #ca9703;
   width: 100%;
 }
-.products_div .products_desc_div .btn_purchase {
+.products_div .products_desc_div .btn_purchase_div {
   width: 100%;
   height: 40px;
   margin: 20px 0;
 }
 .products_desc_div a .btn_view,
-.products_desc_div .btn_purchase {
+.products_desc_div .btn_purchase_div {
   background-color: transparent;
   outline: none;
   border: none;
@@ -248,13 +243,29 @@ a:hover {
   align-items: center;
   color: #ca9703;
 }
-.products_desc_div .btn_purchase p {
+.products_desc_div .btn_purchase_div .product_price,
+.products_desc_div .btn_purchase_div .btn_purchase {
   width: 40%;
+  align-self: flex-end;
 }
-.path {
-  width: 50%;
-  border: 0.5px dashed #ca9703;
-  margin: 0 10%;
+.btn_purchase {
+  background-color: #ca9703;
+  color: #f4f4f4;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2.5px 5px;
+  border: none;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+}
+.btn_purchase:hover {
+  cursor: pointer;
+  transform: scale(1.02);
+}
+.btn_purchase svg {
+  padding: 2px;
 }
 .home_banner,
 .home_banner_overlay {

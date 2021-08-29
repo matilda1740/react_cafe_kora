@@ -17,7 +17,7 @@ export default function AllProducts({product_id, product_name, product_image, pr
                     <h3 className="product_title">{product_name}</h3>
                     <p>{product_descr} {product_descr} {product_descr} {product_descr}
                     </p>
-                    <button className="btn_purchase">
+                    <button className="btn_purchase_div">
                         <p className="product_price">Ksh. {product_price}</p>
                         <p><AddShoppingCart/>
                         </p>

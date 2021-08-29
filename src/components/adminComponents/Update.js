@@ -3,22 +3,25 @@ import React, { useEffect, useState } from 'react'
 import { Link, useHistory } from 'react-router-dom';
 import { useStateValue } from '../StateProvider'
 import './Update.css'
+import { CancelOutlined, CheckCircleOutline } from '@material-ui/icons'
 
 export default function Update({match}) {
 
-    const [ { products }, dispatch] = useStateValue();
+    const [ { products, productUpdateStatus}, dispatch] = useStateValue();
+
     const [currentP,setCurrentP ] = useState();
     const [isUpdate, setIsUpdate] = useState(false);
     const [prodImage, setProdImage] = useState();
     const [prodDetails, setProductDetails] = useState({});
 
-
     const history = useHistory();
     const addForm = document.querySelectorAll(".add_product_form .form_inputs")
 
-    // UPDATES
-    const [isImageUpdate, setIsImageUpdate] = useState(false);
-    const [isDataUpdate, setIsDataUpdate] = useState(false);
+    // UPDATE ALERTS
+    // const alertDiv = document.querySelector(".")
+    const [ successAlert, setSuccessAlert] = useState(false);
+    const [ failureAlert, setFailureAlert] = useState(false);
+    const [ alertMsg, setAlertMsg] = useState("Product Added Successfully!");
 
     useEffect(() => {
         if(match){
@@ -43,7 +46,6 @@ export default function Update({match}) {
         setError("Please Ensure all Input Fields are Filled")
         // setIsFormFilled(false)                           
     }
-
     const deactivateErrors = el => {
         el.style.border = ""
         el.style.backgroundColor =""
@@ -61,7 +63,6 @@ export default function Update({match}) {
             image.src = "/images/avatar_placeholder.png";
         }
     }
-
     const handleChange = input => async (e) => {
         e.preventDefault();
         (input === "product_image") && loadImage(e)      
@@ -111,7 +112,13 @@ export default function Update({match}) {
             return counter
         })
         if (isUpdate){
-             updateProduct().then( () => history.push("/admin")) 
+             updateProduct().then( () => {
+                 setSuccessAlert(true)
+                 setAlertMsg("Product Added Successfully!")
+                 setTimeout(() => {
+                    //  alerts set display here then reset everything to false
+                 }, 3000);
+             }).then( () => history.push("/admin")) 
         } else {
             (counter === 5) && addProduct().then( () => history.push("/admin")) 
         }
@@ -119,6 +126,13 @@ export default function Update({match}) {
     
     return (
         <section className="update_section up_prod"> 
+
+            <div className="user_alerts failure">
+                <p>{alertMsg}</p>
+                {/* <CheckCircleOutline /> */}
+                <CancelOutlined />
+
+            </div>
 
             <h2 className="add_prod_title">Cafe Kora {isUpdate ? "Update Product" : "Add Product"} </h2>
 

@@ -19,35 +19,46 @@ import { useStateValue } from './components/StateProvider';
 import Cart from './components/Cart';
 import Checkout from './components/Checkout';
 import AllProducts from './components/AllProducts';
+import Account from './components/Account';
 
 
 export default function App(){
-    const [ { users, products }, dispatch] = useStateValue();
+    const [ { users, products,orders}, dispatch] = useStateValue();
     const [ allProducts, setAllProducts] = useStateValue();
-
-    const loadProducts = async () => {
-        dispatch({
-            type: "fetch_products"
-        })       
-    }
 
     const loadUsers = async () => {
         dispatch({
             type: "fetch_users"
         })       
     }
-
-    const addToCart = (targetID) => {
+    const loadProducts = async () => {
         dispatch({
-            type: "add_to_cart",
-            targetID
-        })   
+            type: "fetch_products"
+        })       
+    }
+    const loadOrders = async () => {
+        dispatch({
+            type: "fetch_orders"
+        })       
     }
 
+    const increaseQty = (product) => {
+        dispatch({
+        type: "increase_qty",
+        item: product
+        })
+    }
+    const decreaseQty = (product) => {
+        dispatch({
+        type: "decrease_qty",
+        item: product
+        })
+    }  
 
     useEffect(() => {
         loadUsers()
         loadProducts().then( () => setAllProducts(products))
+        loadOrders()
     }, []) 
   return (
 
@@ -57,27 +68,27 @@ export default function App(){
         <Switch> 
           <>
           <Route path="/admin" component={AdminHome} />
-          {/* <Route exact path="/admin/add_products" component={AddProducts} /> */}
-
           <section className="main_page_section">
           <Header/>
 
           <Route exact path="/" component={HomePage} />   
           <Route 
-                  exact path="/products" 
-                  render={() => ( <AllProducts products={allProducts} />
-                  )} 
-                />              
+              exact path="/products" 
+              render={() => ( <AllProducts products={allProducts} />
+              )} 
+              />              
           <Route exact path="/breads" component={Breads} />
           <Route exact path="/pastries" component={Pastries} />
-          <Route exact path="/cart" component={Cart} />
+          <Route exact path="/cart">
+            <Cart increaseQty={increaseQty} decreaseQty={decreaseQty}/>
+          </Route> 
           <Route exact path="/checkout" component={Checkout} />
-
-          {/* <Route exact path="/profile" component={Profile} />   */}
-          <Route exact path="/profile/:id" component={Profile} />  
-
           <Route exact path="/login" component={Login} />        
           <Route exact path="/register" component={Register} /> 
+
+          <Route path="/my_account/:id" component={Account} />  
+
+
         </section>
           </>
 

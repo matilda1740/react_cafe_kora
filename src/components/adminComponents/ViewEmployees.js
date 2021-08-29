@@ -3,6 +3,7 @@ import { useStateValue } from '../StateProvider';
 import { Create, Delete } from '@material-ui/icons'
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { getTotalTeam} from '../reducer';
 
 export default function ViewEmployees() {
 
@@ -39,7 +40,7 @@ export default function ViewEmployees() {
             <h4 className="welcome_text">
                 Cafe Kora Team
             </h4>
-            {/* <p className="welcome_ptag">Total Team Members: {users?.length}</p> */}
+            <p className="welcome_ptag">Total Team Members: {getTotalTeam(users)}</p>
             
         </div>
 

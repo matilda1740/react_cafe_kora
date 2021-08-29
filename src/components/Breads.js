@@ -1,4 +1,4 @@
-import { AddShoppingCart } from '@material-ui/icons';
+import { AddShoppingCart, Done, Remove } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react'
 import "../App.css";
 import { useStateValue } from './StateProvider';
@@ -7,28 +7,19 @@ export default function Breads() {
     const [ { products}, dispatch] = useStateValue();
     const [currentItem, setCurrentItem] = useState();
 
+    const [isAddedToCart, setIsAddedToCart] = useState(false);
+
     const loadProducts = async () => {
         dispatch({
             type: "fetch_products"
         })       
     }
-
-    const findSelection = async (e) => {
-        const targetID = e.target.parentNode.parentNode.parentNode.parentNode.id
-
-        if(targetID){
-            setCurrentItem(...products.filter( prod => prod.product_id === targetID && prod))
-        }
-    }
-    const addToCart = async (e) => { 
-        findSelection(e).then( data => {
-            if(currentItem !== undefined){
-                dispatch({
-                type: "add_to_cart",
-                item: currentItem
-                })
-            }
+    const addToCart = (product) => { 
+        dispatch({
+        type: "add_to_cart",
+        item: product
         })
+
     }
     
     useEffect(() => {
@@ -48,11 +39,22 @@ export default function Breads() {
                     <h3 className="product_title">{product.product_name}</h3>
                     <p>{product.product_descr} {product.product_descr} {product.product_descr} {product.product_descr}
                     </p>
-                    <button className="btn_purchase">
+                    <div className="btn_purchase_div">
                         <p className="product_price">Ksh. {product.product_price}</p>
-                        <p><AddShoppingCart onClick={addToCart}/>
-                        </p>
-                    </button>
+                        {/* {
+                            product.inCart === true ?
+                            <button className="btn_purchase" id={product.product_id}>
+                            <p>Remove From Cart</p>
+                            <Remove />
+                            </button>
+: */}
+                            <button className="btn_purchase" onClick={() => addToCart(product)}>
+                            <p>Add To Cart</p>
+                            <AddShoppingCart />
+                            </button>
+                        {/* } */}
+
+                    </div>
                 </div>
             </div>
             )

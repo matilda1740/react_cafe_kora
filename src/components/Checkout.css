@@ -9,35 +9,40 @@
 
 .checkout_column {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  width: 400px;
-  height: 700px;
-  margin-top: 5%;
+  flex-flow: column wrap;
+  width: 100%;
+  height: 800px;
   padding-top: 20px;
+  margin-left: 5%;
+  transition: all 0.3s ease-in-out;
+}
+.checkout_column_div {
+  width: 375px;
+  padding: 20px 0;
 }
 .checkout_page h4 {
   width: 90%;
-  padding-left: 10%;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.order_subtotal,
+.payment_info,
+.review_order,
+.delivery_info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 30px 90px;
 }
 .review_order,
 .delivery_info {
   background-color: #dcdcdc;
-  border-radius: 8px;
-  box-shadow: rgba(0, 0, 0, 0.4) 0px 30px 90px;
-  padding: 20px 0;
 }
 .order_subtotal,
 .payment_info {
-  padding: 20px 0;
-  margin: 40px 0 0 0;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   background-color: #d3d3d3;
-  border-radius: 8px;
+  margin: 40px 0 0 0;
 }
 .product_review_div * {
   color: black !important;
@@ -58,6 +63,7 @@
 .product_review_div .products_desc_div {
   width: 80%;
   height: 50px;
+  align-items: center;
 }
 .product_review_div .products_image_div,
 .product_review_div .products_desc_div {
@@ -74,22 +80,54 @@
   display: flex;
   flex-direction: row;
   width: 100%;
+  height: 100%;
   justify-content: space-around;
-}
-.product_review_div .products_desc_div .btn_purchase {
-  width: 50%;
-  display: flex;
-
   align-items: center;
 }
-.product_review_div .products_desc_div .btn_purchase p {
+.product_review_div .products_desc_div .quantity_controls svg {
+  font-size: medium;
+}
+.product_review_div .products_desc_div .btn_purchase_div {
+  width: 50%;
+  height: 100%;
+}
+.product_review_div .products_desc_div .btn_purchase_div p {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
+  height: 100%;
 }
 
 .order_subtotal_row,
 .payment_info_row {
-  width: 90%;
+  width: 100%;
   display: flex;
-  padding: 20px 5px;
+  padding: 20px 30px;
   justify-content: space-between;
+  transition: all 0.3s ease-in-out;
+}
+.payment_info_row:hover {
+  cursor: pointer;
+  background-color: #002147;
+  color: #ca9703;
+  border-left: 2px solid #ca9703;
+}
+.delivery_info {
+  height: 80%;
+}
+.delivery_info form {
+  width: 80%;
+  height: 90%;
+  margin: 0 10%;
+  /* padding: ; */
+}
+
+.delivery_info form > * {
+  padding-top: 10px;
+}
+
+.checkout_btn {
+  background-color: #ca9703;
+  width: 375px;
 }

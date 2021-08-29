@@ -14,7 +14,7 @@
   margin: 0 0 0 25%;
 }
 .up_prod {
-  margin: 3% 0 0 10%;
+  margin: 5% 0 0 10%;
 }
 .update_section h2 {
   width: 100%;
@@ -53,9 +53,16 @@
   background-color: rgb(244, 194, 194, 0.9);
   color: black;
 }
-#display_userImage {
+/* #display_userImage {
   width: 300px !important;
   height: 300px !important;
+  border-radius: 50%;
+  object-fit: contain !important;
+  /* display: none; */
+/* }  */
+#display_userImage {
+  width: 100px !important;
+  height: 100px !important;
   border-radius: 50%;
   object-fit: contain !important;
   /* display: none; */

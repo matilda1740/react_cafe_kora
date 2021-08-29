@@ -3,14 +3,28 @@ import { db, storage, time } from './firebase'
 
 const customersRef = db.collection('user')
 const productsRef = db.collection('product')
-const ordersRef = db.collection('orders')
-
+const ordersRef = db.collection('order')
+const orderDetailsRef = db.collection('orderDetails')
 
 export const initialState = {
     users: [],
     products: [],
-    cart: []
+    cart: [],
+    orders: [],
+    userOrders: []
 };
+
+// USER FUNCTIONS
+export const getTotalCustomers = (customers) => customers?.filter(customer => customer.type === "customer").length
+ 
+export const getTotalTeam = (customers) => customers?.filter(customer => customer.type === "admin").length
+
+// CART FUNCTIONS
+export const getSubTotal = (cart) => {
+  return cart?.reduce((amount, item) => item.quantity > 1 ? amount+=parseInt(item.product_price * item.quantity) :amount+=parseInt(item.product_price), 0)   
+}
+export const getproductTotal = (cart) => cart?.reduce((amount, item) => amount+=parseInt(item.quantity), 0)
+
 
 export const reducer = (prevState = initialState, action) => {
     switch(action.type) {
@@ -233,23 +247,14 @@ export const reducer = (prevState = initialState, action) => {
                 ...prevState, 
                 products: fetchedProducts,
             }
-
-
 //CART OPERATIONS  
         case "add_to_cart": 
-
             let addedCart = [...prevState.cart]
-
+            console.log("Add To Cart Action: ", action)
             try {
-
                 let itemExists = addedCart.find( product => product.product_id === action.item.product_id);
-
-                console.log(itemExists)
-
-                if (!itemExists){
-                    addedCart.push({...action.item, quantity: 1});
-                }
-
+                !itemExists && addedCart.push({...action.item, quantity: 1}) 
+            
             }catch(error){
                 console.log("Error Adding Item To Cart: ", error)
             }
@@ -257,15 +262,89 @@ export const reducer = (prevState = initialState, action) => {
                  ...prevState, 
                 cart: addedCart         
             }  
-        case "fetch_cart": 
-
-            let fetchedCart = [...prevState.cart]
-            console.log("Fetch Cart Action: ", action)
-
+        case "increase_qty": 
+            let increasedCart = [...prevState.cart]; 
+            console.log("Increase Qty Action: ", action)
+            try{
+                let productId = increasedCart.findIndex(product => product.product_id === action.item.product_id)
+                productId !== -1 ? increasedCart[productId].quantity +=1
+                : console.log("Error Increasing Quantity: ", productId);
+               
+            }catch(error){
+                console.log("Error Increasing Quantity: ",error);
+            }
             return {
-                 ...prevState, 
-                cart: fetchedCart          
-            }  
+                ...prevState,
+                cart: increasedCart
+            };
+    
+        case "decrease_qty":
+            let currentCartCopy = [...prevState.cart]; 
+            try{
+                let itemExists = currentCartCopy.find( product => product.product_id === action.item.product_id);
+
+                itemExists.quantity <= 1 ? 
+                     currentCartCopy.splice(prevState.cart.findIndex( item  => item.id === action.item.product_id), 1)
+                    :itemExists.quantity = parseInt(itemExists.quantity) - 1
+                
+            }catch(error){
+                console.log(error);
+            }
+            return {
+                ...prevState,
+                cart: currentCartCopy
+            };            
+
+// ADMIN SIDE: FETCH ORDERS 
+        case "fetch_orders": 
+        let fetchedOrders = [...prevState.orders];
+        try{
+            ordersRef 
+            .onSnapshot((snapshot) => {
+                snapshot.docChanges().forEach( item => {
+                    if(fetchedOrders.length === 0){
+                        fetchedOrders.push(item.doc.data())
+                    }else{
+                        let itemExists = fetchedOrders.findIndex( order => order.orderID === item.doc.data().orderID)
+
+                        if(itemExists < 0){
+                            fetchedOrders.push(item.doc.data())
+                        }
+                    }
+                })
+            })
+        }catch(error){
+            console.log(error)
+        }
+        return{
+            ...prevState, 
+            orders: fetchedOrders,
+        } 
+//SEND CART ITEMS TO DB
+        case "new_order":
+        let copyOrders = [...prevState.orders];
+
+        return {
+            ...prevState,
+            orders: copyOrders
+        };            
+
+//ACCOUNT ACTIONS
+        case "user_order_history":
+            let copyUserOrders = [...prevState.userOrders];
+            try{
+                ordersRef
+                    .where("customerID", "==", `${action.userID}`)
+                    .get()
+                    .then( snapshot => snapshot.forEach( item => copyUserOrders.push({...item.data()})
+                    ))
+            }catch(error){
+                console.log("Error Displayong Order History: ", error)
+            }
+            return {
+            ...prevState,
+            userOrders: copyUserOrders                
+            }
         default: 
             return prevState;
     }

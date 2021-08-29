@@ -4,13 +4,14 @@ import { Link, Route } from 'react-router-dom';
 import './AdminHome.css'
 
 import { db } from '../firebase'
-import {BusinessCenter, Collections, GroupWork, Home, Inbox, Language, People, Person, Queue, ShowChart } from '@material-ui/icons';
+import {BusinessCenter, Collections, GroupWork, Home, Inbox, Language, People, Person, Queue, ShoppingCart, ShowChart } from '@material-ui/icons';
 import MainDash from './MainDash';
 import ViewCustomers from './ViewCustomers';
 import ViewEmployees from './ViewEmployees';
 import ViewProducts from './ViewProducts';
 import Update from './Update';
 import { useStateValue } from '../StateProvider';
+import ViewOrders from './ViewOrders';
 
 export default function AdminHome() {
 
@@ -62,6 +63,10 @@ export default function AdminHome() {
                         <Queue className="sidebar_icons"/>
                         <Link to="/admin/add_products">Add Products</Link>
                     </p>
+                     <p className="sidebar_parts">
+                        <ShoppingCart className="sidebar_icons"/>
+                        <Link to="/admin/orders">Customer Orders</Link>
+                    </p>                   
                     <p className="sidebar_parts">
                         <ShowChart className="sidebar_icons"/>Analytics
                     </p>
@@ -87,16 +92,12 @@ export default function AdminHome() {
             </section>
 
             <div className="dashboard_options_cont">
-                {/* PUSH DATA ACCORDING TO THE USER CLICKS */}
                 <Route exact path="/admin">
-                    <MainDash/>
+                    <MainDash customers={users}/>
                 </Route>
                 <Route exact path="/admin/customers">
                     <ViewCustomers/>
                 </Route> 
-                {/* <Route exact path="/admin/customers">
-                    <Update />
-                </Route>  */}
                 <Route exact path="/admin/team">                            
                     <ViewEmployees/>
                 </Route>  
@@ -107,6 +108,9 @@ export default function AdminHome() {
                     <Update />
                 </Route>      
                 <Route exact path="/admin/update_products/:id" component={Update} />
+                <Route exact path="/admin/orders">
+                    <ViewOrders />
+                </Route> 
             
             </div>
         </section>

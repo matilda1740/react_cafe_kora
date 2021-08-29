@@ -40,7 +40,7 @@ export default function Pastries() {
                     <h3 className="product_title">{product.product_name}</h3>
                     <p>{product.product_descr} {product.product_descr} {product.product_descr} {product.product_descr}
                     </p>
-                    <button className="btn_purchase">
+                    <button className="btn_purchase_div">
                         <p className="product_price">Ksh. {product.product_price}</p>
                         <p><AddShoppingCart onClick={addToCart}/></p>
                     </button>

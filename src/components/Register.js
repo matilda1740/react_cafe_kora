@@ -3,7 +3,7 @@ import { Link, useHistory } from 'react-router-dom'
 import './Login.css'
 import { useAuth } from '../contexts/AuthContext'
 import { db,  time } from './firebase'
-import {Home } from '@material-ui/icons';
+import { Home } from '@material-ui/icons';
 
 export default function Register() {
     const history = useHistory();
@@ -50,10 +50,12 @@ export default function Register() {
         if(userPass === userConfirmPass){
             try{
                 // console.log(userEmail, userPass)
-                await registerUser(userEmail, userPass)
-                    .then( (data) => console.log(data))
-                await userTable.add({
-                    "userID": userTable.doc().id,
+                let response = await registerUser(userEmail, userPass)
+                    
+                if(response){
+                    // console.log(response.user.uid)
+                    await userTable.add({
+                    "userID": response.user.uid,
                     "fname": firstName,
                     "lname": lastName,
                     "phone": userPhone,
@@ -61,7 +63,10 @@ export default function Register() {
                     "email": userEmail,
                     "pass": userPass,
                     "datejoined": time
-                    })                    
+                    }) 
+
+                }
+                
                 await isAdmin ? history.push("/admin") : history.push("/")
                 await  setIsAuthError(false);
             }catch(error){

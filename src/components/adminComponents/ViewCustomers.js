@@ -6,10 +6,12 @@ import {Create, Delete } from '@material-ui/icons';
 import { useStateValue } from '../StateProvider';
 import { Link } from 'react-router-dom';
 
+import { getTotalCustomers } from '../reducer';
+
 export default function ViewCustomers() {
 
     const [ { users }, dispatch] = useStateValue();
-       
+
     const handleDelete = (e) => {
         e.preventDefault();
         let targetID = e.target.parentNode.parentNode.parentNode.parentNode.id;
@@ -36,7 +38,7 @@ export default function ViewCustomers() {
             <h4 className="welcome_text">
                 Cafe Kora Customers 
             </h4>
-            {/* <p className="welcome_ptag">Total Customers: {users?.length}</p> */}
+            <p className="welcome_ptag">Total Customers: {getTotalCustomers(users)}</p>
             
         </div>
         {

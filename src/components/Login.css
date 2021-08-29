@@ -2,8 +2,7 @@
 
 /************ LOGIN PAGE *************/
 .login_section,
-.role_section,
-.update_section {
+.role_section {
   display: flex;
   flex-direction: column;
   align-items: center;
