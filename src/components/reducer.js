@@ -35,6 +35,7 @@ export const reducer = (prevState = initialState, action) => {
             // console.log("Fetch Users Action: ", action)
             try{
                 customersRef 
+                .orderBy('fname', 'asc')
                 .onSnapshot((snapshot) => {
                     snapshot.docChanges().forEach( item => {
                         if(fetchedUsers.length === 0){

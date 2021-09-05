@@ -4,7 +4,7 @@ import { useStateValue } from './StateProvider'
 import '../components/adminComponents/Update.css'
 import './Profile.css'
 
-export default function Profile({match}) {
+export default function Profile() {
 
     const [error, setError] = useState();
     const [isError, setIsError] = useState(false);

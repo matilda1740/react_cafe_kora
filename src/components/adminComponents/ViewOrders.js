@@ -4,7 +4,10 @@ import React from 'react'
 import { useStateValue } from '../StateProvider';
 
 export default function ViewOrders() {
-    const [ { orders }, dispatch] = useStateValue();
+    const [ { users, orders }, dispatch] = useStateValue();
+
+    console.log(users.map( user => orders.filter(order => user.userID === order.customerID) )
+    )
     return (
         <>
             <div className="welcome_bar">

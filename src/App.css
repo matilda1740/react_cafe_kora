@@ -152,6 +152,8 @@ a:hover {
   justify-content: space-between;
   padding: 0 30px 0 40px;
   color: black;
+  transition: all 0.5s ease-in-out;
+  animation: fadeInOut 4s;
 }
 
 .user_alerts svg {
@@ -169,6 +171,20 @@ a:hover {
 .user_alerts.failure svg {
   color: #9b111e;
 }
+@keyframes fadeInOut {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  25%,
+  75% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
 /**************** END OF ALERTS *************/
 
 .products_div {

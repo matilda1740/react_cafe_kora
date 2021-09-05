@@ -40,7 +40,7 @@ export default function Checkout() {
                 let createOrder = 
                 await orderTable.add({
                     "orderID": orderTable.doc().id,
-                    "orderTotal": getSubTotal(cart),
+                    "orderTotal": getSubTotal(cart) + shipFee,
                     "orderQty": getproductTotal(cart),
                     "orderDate": time,
                     "customerID": currentUser.uid

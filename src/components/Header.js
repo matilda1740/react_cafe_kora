@@ -42,7 +42,7 @@ export default function Header() {
             {
                 currentUser ?
                  <>
-                   <Link to="/my_account/:id">
+                   <Link to={`/my_account/${currentUser.uid}`}>
                    <PersonPin/>
                    Welcome, {currentUser.email}</Link>
                   <button onClick={handleLogout} className="logout_btn">Log Out</button>

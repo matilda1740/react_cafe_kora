@@ -6,11 +6,21 @@
 svg:hover {
   cursor: pointer;
 }
-
-.cart_product_div {
+.page_title_div {
+  display: flex;
+  flex-direction: column;
+  margin: 20px 5% 20px 5%;
+  color: #ca9703;
+  align-items: center;
   height: 100px;
+}
+.cart_product_div {
+  height: 125px;
   margin: 30px 5% 0 5%;
-  border-bottom: 1px dotted #ca9703;
+  background-color: rgba(0, 111, 247, 0.1);
+  border-radius: 25px;
+  padding-top: 0px;
+  /* border-bottom: 1px dotted #ca9703; */
 }
 
 .cart_products_image_div {
@@ -63,12 +73,24 @@ svg:hover {
 }
 
 .cart_routes {
-  width: 100%;
+  width: 90%;
   height: 100px;
   display: flex;
+  justify-content: space-between;
+  /* align-self: flex-end; */
   align-items: center;
-  justify-content: center;
-  margin: 20px 0;
+  margin: 30px 5% 0 5%;
+  color: #ca9703;
+  border-radius: 25px;
+  /* padding: 20px 70px 20px 100px; */
+  /* background-color: rgba(0, 111, 247, 0.1); */
+}
+.cart_routes a button {
+  color: #ca9703;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background-color: transparent;
 }
 .btn {
   cursor: pointer;
@@ -81,23 +103,13 @@ svg:hover {
 .btn:hover {
   transform: scale(1.02);
 }
-.cart_routes button {
-  margin: 0 20px;
-}
-
 .subtotal_div {
   width: 50%;
-  height: 100px;
   display: flex;
-  justify-content: flex-end;
-  align-self: flex-end;
-  align-content: center;
-  padding: 20px 70px 20px 100px;
+  align-items: center;
+  justify-content: center;
 }
-
 .subtotal_div p {
-  font-size: 25px;
-  color: #ca9703;
   padding: 0 20px;
-  align-self: flex-end;
+  align-self: center;
 }

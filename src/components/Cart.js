@@ -1,4 +1,4 @@
-import { Add, Remove } from '@material-ui/icons'
+import { Add, ArrowRightAlt, KeyboardBackspace, Remove } from '@material-ui/icons'
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import './Cart.css'
@@ -11,7 +11,13 @@ export default function Cart({increaseQty, decreaseQty}) {
         <section className="products_page cart_products_page">
             {
                 cart?.length ?
+
                 <>
+                <div className="page_title_div">
+                    <h2 className="add_prod_title">Cart Products</h2>
+                    <h5>You have {cart?.length} items in your cart</h5>
+                </div>
+
                 <>
                 {
                 cart.map( product => (
@@ -38,19 +44,18 @@ export default function Cart({increaseQty, decreaseQty}) {
                 ))
                 }
                 </>
-                <div className="subtotal_div">
-                    <p>Order Total: </p>
-                    <p>Ksh. {getSubTotal(cart)}</p>
-                </div>                 
                 <div className="cart_routes">
                     <Link to="/breads">
-                    <button className="btn">Continue Shopping</button>
+                    <button className="btn"><KeyboardBackspace/>Continue Shopping</button>
                     </Link>
-                    <Link to="/checkout">
-                    <button className="btn">Proceed to Checkout</button>
-                    </Link>
-
-                </div> 
+                    <div className="subtotal_div">
+                        <p>Order Total: </p>
+                        <p>Ksh. {getSubTotal(cart)}</p>                
+                    </div> 
+                     <Link to="/checkout">
+                    <button className="btn">Proceed to Checkout <ArrowRightAlt/></button>
+                    </Link>                   
+                </div>                 
                 </>
                 : 
                 <>

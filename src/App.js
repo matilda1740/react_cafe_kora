@@ -24,7 +24,6 @@ import Account from './components/Account';
 
 export default function App(){
     const [ { users, products,orders}, dispatch] = useStateValue();
-    const [ allProducts, setAllProducts] = useStateValue();
 
     const loadUsers = async () => {
         dispatch({
@@ -57,8 +56,9 @@ export default function App(){
 
     useEffect(() => {
         loadUsers()
-        loadProducts().then( () => setAllProducts(products))
+        loadProducts()
         loadOrders()
+        // console.log(currentUser)
     }, []) 
   return (
 
@@ -71,12 +71,7 @@ export default function App(){
           <section className="main_page_section">
           <Header/>
 
-          <Route exact path="/" component={HomePage} />   
-          <Route 
-              exact path="/products" 
-              render={() => ( <AllProducts products={allProducts} />
-              )} 
-              />              
+          <Route exact path="/" component={HomePage} />              
           <Route exact path="/breads" component={Breads} />
           <Route exact path="/pastries" component={Pastries} />
           <Route exact path="/cart">
@@ -86,7 +81,7 @@ export default function App(){
           <Route exact path="/login" component={Login} />        
           <Route exact path="/register" component={Register} /> 
 
-          <Route path="/my_account/:id" component={Account} />  
+          <Route path="/my_account/:id" exact component={Account} />  
 
 
         </section>

@@ -3,15 +3,19 @@ import { ArrowDownward, ArrowUpward, CancelOutlined, CheckCircleOutline } from '
 import { Link } from 'react-router-dom';
 import { getTotalCustomers, getTotalTeam} from '../reducer';
 import { useStateValue } from '../StateProvider';
+import Chart from './Chart';
+import { useAuth } from '../../contexts/AuthContext';
 
 export default function MainDash({customers, team}) {
     const [ { users }, dispatch] = useStateValue();
+    const { currentUser } = useAuth(); 
 
     return (
         <>
         <div className="welcome_bar">
             <h4 className="welcome_text">Main Dashboard</h4>
-            <p className="welcome_ptag">last seen 24th January 2056</p>
+            <p className="welcome_ptag">Welcome, {
+                currentUser && currentUser.email}</p>
         </div>
 
         <div className="display_area">
@@ -51,7 +55,8 @@ export default function MainDash({customers, team}) {
             </div>
         
             <div className="display_area_right">
-                <div className="rev_box"></div>
+                {/* <div className="rev_box"></div> */}
+                <Chart />
             </div> 
         </div>            
         </>

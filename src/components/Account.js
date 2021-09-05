@@ -9,7 +9,7 @@ import { getproductTotal } from './reducer';
 import { useAuth } from '../contexts/AuthContext';
 import { db } from './firebase'
 
-export default function Account() {
+export default function Account({match}) {
     const { currentUser } = useAuth(); 
 
     const [currOrders, setCurrOrders] = useState();

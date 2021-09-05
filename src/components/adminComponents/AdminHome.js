@@ -4,7 +4,7 @@ import { Link, Route } from 'react-router-dom';
 import './AdminHome.css'
 
 import { db } from '../firebase'
-import {BusinessCenter, Collections, GroupWork, Home, Inbox, Language, People, Person, Queue, ShoppingCart, ShowChart } from '@material-ui/icons';
+import {BusinessCenter, Collections, GroupWork, Home, Inbox, Language, MeetingRoom, People, Person, Queue, ShoppingCart, ShowChart } from '@material-ui/icons';
 import MainDash from './MainDash';
 import ViewCustomers from './ViewCustomers';
 import ViewEmployees from './ViewEmployees';
@@ -12,15 +12,24 @@ import ViewProducts from './ViewProducts';
 import Update from './Update';
 import { useStateValue } from '../StateProvider';
 import ViewOrders from './ViewOrders';
+import { useAuth } from '../../contexts/AuthContext';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 export default function AdminHome() {
 
     const [ {users, products}, dispatch] = useStateValue();
+    const { currentUser, logoutUser} = useAuth(); 
+
+    const history = useHistory();
 
     const loadProducts = () => {
         dispatch({
             type: "fetch_products"
         })       
+    }
+    const handleLogout = () => {
+        logoutUser();
+        history.push("/")
     }
 
     const loadUsers = async () => {
@@ -67,26 +76,14 @@ export default function AdminHome() {
                         <ShoppingCart className="sidebar_icons"/>
                         <Link to="/admin/orders">Customer Orders</Link>
                     </p>                   
-                    <p className="sidebar_parts">
-                        <ShowChart className="sidebar_icons"/>Analytics
-                    </p>
-                    
-                    <p className="sidebar_parts">
-                        <Inbox className="sidebar_icons"/>Categories
-                    </p>
-                    
-                    <p className="sidebar_parts">
-                        <BusinessCenter className="sidebar_icons"/>Employees
-                    </p>
-                    
-                    <p className="sidebar_parts">
-                        <Person className="sidebar_icons"/>Profile
-                    </p>
-
+            
                     <p className="sidebar_parts">
                         <Language className="sidebar_icons"/>
                         <Link to="/">Website Home</Link>
-                    </p>          
+                    </p> 
+                    <p className="sidebar_parts" onClick={handleLogout}>
+                        <MeetingRoom className="sidebar_icons"/>Log Out
+                    </p>                             
                 </div>
 
             </section>

@@ -16,12 +16,12 @@ export default function Update({match}) {
 
     const history = useHistory();
     const addForm = document.querySelectorAll(".add_product_form .form_inputs")
-
     // UPDATE ALERTS
     // const alertDiv = document.querySelector(".")
     const [ successAlert, setSuccessAlert] = useState(false);
     const [ failureAlert, setFailureAlert] = useState(false);
     const [ alertMsg, setAlertMsg] = useState("Product Added Successfully!");
+    const alertStyle = { display: successAlert ? `flex`  : `none`}
 
     useEffect(() => {
         if(match){
@@ -99,6 +99,16 @@ export default function Update({match}) {
         })        
 
     }
+
+    const displaySuccess = () => {
+        setSuccessAlert(true)
+        setAlertMsg("Product Added Successfully!")
+        setTimeout(() => {
+            setSuccessAlert(false)
+            setAlertMsg("")   
+            history.push("/admin")
+        }, 4000);
+    }
     const handleSubmit = (e) => {
         e.preventDefault();
         let counter = 0
@@ -112,25 +122,19 @@ export default function Update({match}) {
             return counter
         })
         if (isUpdate){
-             updateProduct().then( () => {
-                 setSuccessAlert(true)
-                 setAlertMsg("Product Added Successfully!")
-                 setTimeout(() => {
-                    //  alerts set display here then reset everything to false
-                 }, 3000);
-             }).then( () => history.push("/admin")) 
+             updateProduct().then( () => displaySuccess()) 
         } else {
-            (counter === 5) && addProduct().then( () => history.push("/admin")) 
+            (counter === 5) && addProduct().then( () => displaySuccess()) 
         }
     }
     
     return (
         <section className="update_section up_prod"> 
 
-            <div className="user_alerts failure">
+            <div className="user_alerts success" style={{ display: alertStyle.display }}>
                 <p>{alertMsg}</p>
-                {/* <CheckCircleOutline /> */}
-                <CancelOutlined />
+                <CheckCircleOutline />
+                {/* <CancelOutlined /> */}
 
             </div>
 
